@@ -4,7 +4,6 @@ using DAL;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace MPP
 {
@@ -19,18 +18,52 @@ namespace MPP
 
         public bool Guardar(BEFactura Objeto)
         {
-            throw new NotImplementedException();
+            string Consulta_SQL = string.Empty;
+
+            //PARTE FACTURA
+            if (Objeto.Id != 0)
+            {
+                Consulta_SQL = "Update Facturas SET MontoTotal = " + Objeto.MontoTotal + ", MetodoPago = '" + Objeto.MetodoPago + 
+                    "', Fecha = " + Objeto.Fecha.ToString("MM/dd/yyyy") + ", Id_Cliente =" + Objeto.BECliente.Id + " WHERE Id_Factura = " + Objeto.Id ;                
+            }
+
+            else
+            {
+                Consulta_SQL = "Insert into Facturas (MontoTotal, MetodoPago,Fecha, Id_Cliente) values(" + Objeto.MontoTotal + ", '" + Objeto.MetodoPago+
+                    "', " + Objeto.Fecha.ToString("MM/dd/yyyy") + "," + Objeto.BECliente + ")";
+            }
+            oDatos = new Acceso();
+            oDatos.Escribir(Consulta_SQL);
+            foreach (BEProductos Prod in Objeto.BEProductos)
+            {
+
+            }
+            return 0;
         }
+    
 
         public BEFactura AsignarValores(BEFactura Objeto)
         {
             DataSet Ds;
             oDatos = new Acceso();
-            string Consulta = "SELECT fac.Id_Factura,fac.Fecha,fac.MontoTotal,fac.MetodoPago,Pro.Codigo," +
-                "Pro.Descripcion,Pro.Precio,Cli.Id,Cli.Nombre,Cli.CondicionVenta,Cli.CUIT_DNI " +
-                "FROM DetalleFacturas DetFac JOIN Productos Pro ON DetFac.Id_Producto = Pro.Id_Productos " +
-                "JOIN Personas Cli ON Fac.Id_Clientes = Cli.ID_Persona";
+            string Consulta = "SELECT Id_Factura, MontoTotal,MetodoPago,Fecha,Id_Clientes," +
+                "Id_Facturas_Productos,Estado FROM Facturas WHERE Id_Factura = " + Objeto.Id;
             Ds = oDatos.Leer(Consulta);
+
+            if (Ds.Tables[0].Rows.Count == 1)
+            {
+                DataRow fila = Ds.Tables[0].Rows[0];
+                BEFactura oFactura = new BEFactura();
+                oFactura.Id = Convert.ToInt32(fila["Id_Factura"]);
+                oFactura.MetodoPago = fila["MetodoPago"].ToString();
+                oFactura.Fecha = Convert.ToDateTime(fila["Fecha"]);
+                oFactura.Estado = fila["Estado"].ToString();
+                oFactura.BECliente = BuscarCliente(Convert.ToInt32(fila["Id_Clientes"]));
+                oFactura.BEProductos = BuscarProductos(oFactura);
+                return oFactura;
+            }
+            else { throw new Exception("Los datos no son correctos"); }
+
         }
 
         public List<BEFactura> ListarTodo()
@@ -51,7 +84,7 @@ namespace MPP
                     oFactura.Id = Convert.ToInt32(fila["Id_Factura"]);
                     oFactura.MetodoPago = fila["MetodoPago"].ToString();
                     oFactura.Fecha = Convert.ToDateTime(fila["Fecha"]);
-                    oFactura.BECliente = BuscarCliente(oFactura);
+                    oFactura.BECliente = BuscarCliente(Convert.ToInt32(fila["Id_Clientes"]));
                     oFactura.BEProductos = BuscarProductos(oFactura);
                 }
 
@@ -63,11 +96,11 @@ namespace MPP
         #endregion
         #region METODOS NO GENERICOS
 
-        BECliente BuscarCliente(BEFactura Objeto)
+        BECliente BuscarCliente(int IdCliente)//consultar si paso el objeto entero!!
         {
             DataSet Ds;
             oDatos = new Acceso();
-            string Consulta = "SELECT * FROM PERSONAS WHERE ID_Persona = " + Objeto.;
+            string Consulta = "SELECT * FROM PERSONAS WHERE ID_Persona = " + IdCliente;
             Ds = oDatos.Leer(Consulta);
 
             //rcorro la tabla dentro del Dataset y la paso a lista
@@ -101,7 +134,7 @@ namespace MPP
                     oProductos.PrecioInd = Convert.ToDouble(fila["Precio"].ToString());
                     oProductos.Descuento = Convert.ToDouble(fila["Descuento"]);
                     oProductos.oBEProveedor = new BEProveedores(Convert.ToInt32(fila["Id_Proveedores"]));
-                    
+
                     Lista.Add(oProductos);
                 }
 
@@ -110,7 +143,7 @@ namespace MPP
             { Lista = null; }
             return Lista;
         }
-    
+
         #endregion
     }
 
