@@ -29,9 +29,9 @@ namespace Negocio
 
         }
 
-        public BEProveedores ListarObjeto(BEProveedores Objeto)
+        public BEProveedores AsignarValores(int IdObjeto)
         {
-            return oMPPProvedores.ListarObjeto(Objeto);
+            return oMPPProvedores.AsignarValores(IdObjeto);
 
         }
 

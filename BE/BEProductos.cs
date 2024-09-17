@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BE
@@ -13,15 +14,21 @@ namespace BE
         public double PrecioInd { get; set; }
         public double Descuento{ get; set; }
         public double Cantidad { get; set; }
-        public BEProveedores oBEProveedor{ get; set; }
+        public BEProveedores BEProveedor{ get; set; }
 
         public BEProductos()
         {
-            oBEProveedor = new BEProveedores();
+            BEProveedor = new BEProveedores();
         }
-        public BEProductos(int Id) : this() 
+        public BEProductos(int ID,string Codigo,string Descripcion,double PrecioInd,double Descuento,double Cantidad,BEProveedores Proveedor) :this()
         {
-            this.Id = Id;
+            this.Id = ID;
+            this.Codigo = Codigo;
+            this.Descripcion = Descripcion;
+            this.PrecioInd = PrecioInd;
+            this.Descuento = Descuento;
+            this.Cantidad = Cantidad;
+            this.BEProveedor=Proveedor;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Abstraccion
         bool Guardar(T Objeto);
         bool Baja(T Objeto);
         List<T> ListarTodo();
-        T AsignarValores (T Objeto);
+        T AsignarValores (int IdObjeto);
     }
 }
 

@@ -28,9 +28,9 @@ namespace Negocio
             return oMPPCliente.Guardar(Objeto); ;
         }
 
-        public BECliente AsignarValores(BECliente Objeto)
+        public BECliente AsignarValores(int IdObjeto)
         {
-            return oMPPCliente.AsignarValores(Objeto);
+            return oMPPCliente.AsignarValores(IdObjeto);
         }
 
         public List<BECliente> ListarTodo()

@@ -28,9 +28,9 @@ namespace Negocio
 
         }
 
-        public BEFactura ListarObjeto(BEFactura Objeto)
+        public BEFactura AsignarValores(int IdObjeto)
         {
-            return oMPPFactura.ListarObjeto(Objeto);
+            return oMPPFactura.AsignarValores(IdObjeto);
 
         }
 
