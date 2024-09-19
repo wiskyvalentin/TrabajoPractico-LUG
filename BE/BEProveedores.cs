@@ -23,5 +23,9 @@
                 this.CBU = CBU;
             }
         }
+        public override string ToString()
+        {
+            return this.Id + "- " + this.Nombre;
+        }
     }
 }

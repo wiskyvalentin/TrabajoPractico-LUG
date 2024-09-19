@@ -9,12 +9,8 @@ namespace MPP
 {
     public class MPPProveedores : IGestor<BEProveedores>
     {
-        Acceso oDatos;
-        string Consulta_SQL;
-        public MPPProveedores()
-        {
-
-        }
+        private Acceso oDatos;
+        private string Consulta_SQL;
 
         public bool Baja(BEProveedores Objeto)
         {
@@ -31,13 +27,13 @@ namespace MPP
         {
             if (Objeto.Id != 0)
             {
-                Consulta_SQL = "UPDATE Personas SET Nombre='" + Objeto.Nombre + "',Apellido='" + Objeto.Apellido + "',Correo=" + Objeto.Correo + ",CBU=" + Objeto.CBU + "," +
-                    "Direccion= " + Objeto.Direccion + "WHERE ID_Persona = " + Objeto.Id;
+                Consulta_SQL = "UPDATE Personas SET Nombre='" + Objeto.Nombre + "',Apellido='" + Objeto.Apellido + "',Correo='" + Objeto.Correo + "',CBU='" + Objeto.CBU + "'," +
+                    "Direccion= '" + Objeto.Direccion + "' WHERE ID_Persona = " + Objeto.Id;
             }
             else
             {
-                Consulta_SQL = "INSERT Personas(Nombre,Apellido,Correo,CBU,Direccion) values(" + Objeto.Nombre + ", '" + Objeto.Apellido +
-                    ", '" + Objeto.Correo + ", '" + Objeto.CBU + ", '" + Objeto.Direccion + ")";
+                Consulta_SQL = "INSERT Personas(Nombre,Apellido,Correo,CBU,Direccion) values('" + Objeto.Nombre + "', '" + Objeto.Apellido +
+                    "', '" + Objeto.Correo + "', '" + Objeto.CBU + "', '" + Objeto.Direccion + "')";
 
             };
             oDatos = new Acceso();
@@ -54,11 +50,15 @@ namespace MPP
             //rcorro la tabla dentro del Dataset y la paso a lista
             if (Ds.Tables[0].Rows.Count == 1)
             {
+
                 DataRow fila = Ds.Tables[0].Rows[0];
-                BEProveedores oBEProveedores = new BEProveedores(
-                    Convert.ToInt32(fila["IdCliente"]), fila["Nombre"].ToString(), fila["Apellido"].ToString(), fila["Correo"].ToString(),
+                if (fila["Direccion"] != DBNull.Value)
+                {
+                    BEProveedores oBEProveedores = new BEProveedores(
+                    Convert.ToInt32(fila["ID_Persona"]), fila["Nombre"].ToString(), fila["Apellido"].ToString(), fila["Correo"].ToString(),
                     fila["Direccion"].ToString(), fila["CBU"].ToString());
-                return oBEProveedores;
+                    return oBEProveedores;
+                }
             }
             return null;
         }
@@ -74,10 +74,14 @@ namespace MPP
             {
                 foreach (DataRow fila in Ds.Tables[0].Rows)
                 {
-                    BEProveedores oBEProveedor = new BEProveedores(
-                    Convert.ToInt32(fila["IdCliente"]), fila["Nombre"].ToString(), fila["Apellido"].ToString(), fila["Correo"].ToString(),
-                    fila["Direccion"].ToString(), fila["CBU"].ToString());
-                    ListaProveedores.Add(oBEProveedor);
+                    if (fila["Direccion"] != DBNull.Value)
+                    {
+                        BEProveedores oBEProveedor = new BEProveedores(
+                        Convert.ToInt32(fila["ID_Persona"]), fila["Nombre"].ToString(), fila["Apellido"].ToString(), fila["Correo"].ToString(),
+                        fila["Direccion"].ToString(), fila["CBU"].ToString());
+                        ListaProveedores.Add(oBEProveedor);
+                    }
+
                 }
             }
             else { ListaProveedores = null; }

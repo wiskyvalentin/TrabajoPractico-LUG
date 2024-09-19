@@ -45,7 +45,7 @@ namespace MPP
         {
             DataSet Ds;
             oDatos = new Acceso();
-            string Consulta = "SELECT * FROM PERSONAS WHERE ID_Persona = " + IdObjeto.ToString();
+            string Consulta = "SELECT Id_Producto,Codigo,Descripcion,Precio,Descuento,Id_Proveedores FROM PRODUCTOS WHERE Id_Producto = " + IdObjeto.ToString();
             Ds = oDatos.Leer(Consulta);
 
             //rcorro la tabla dentro del Dataset y la paso a lista
@@ -61,7 +61,7 @@ namespace MPP
                 oProductos.Descuento = Convert.ToDouble(fila["Descuento"]);
                 MPPProveedores oMPPProveedores = new MPPProveedores();
 
-                oProductos.BEProveedor = oMPPProveedores.AsignarValores(Convert.ToInt32(fila["Id_Clientes"]));
+                oProductos.BEProveedor = oMPPProveedores.AsignarValores(Convert.ToInt32(fila["Id_Proveedores"]));
 
                 return oProductos;
             }

@@ -30,5 +30,9 @@ namespace BE
             this.Cantidad = Cantidad;
             this.BEProveedor=Proveedor;
         }
+        public override string ToString()
+        {
+            return this.Codigo + "- " + this.Descripcion + " " + this.Id + " ";
+        }
     }
 }

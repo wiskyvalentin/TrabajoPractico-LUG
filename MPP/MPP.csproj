@@ -45,6 +45,7 @@
     <Compile Include="MPPFactura.cs" />
     <Compile Include="MPPProductos.cs" />
     <Compile Include="MPPProveedores.cs" />
+    <Compile Include="MPPUsuarios.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

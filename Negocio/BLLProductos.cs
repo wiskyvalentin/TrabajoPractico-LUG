@@ -40,6 +40,11 @@ namespace Negocio
             return oMPPPRODUCTOS.ListarTodo();
 
         }
+        public List<BEProductos> ListarTodo(BEFactura Objeto)
+        {
+            return oMPPPRODUCTOS.ListarTodo(Objeto);
+
+        }
         #endregion
         #region METODOS NO GENERICOS
         #endregion

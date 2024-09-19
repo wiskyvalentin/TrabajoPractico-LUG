@@ -13,4 +13,5 @@ namespace BE
         public string Correo { get; set; }
 
     }
+
 }

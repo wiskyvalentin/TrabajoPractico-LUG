@@ -4,16 +4,13 @@ using DAL;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MPP
 {
     public class MPPCliente : IGestor<BECliente>
     {
-        Acceso oDatos;
-        string Consulta_SQL;
+        private Acceso oDatos;
+        private string Consulta_SQL;
 
         public bool Baja(BECliente Objeto)
         {
@@ -23,7 +20,7 @@ namespace MPP
                 oDatos = new Acceso();
                 return oDatos.Escribir(Consulta_SQL);
             }
-            else { throw new ArgumentException("EL CLIENTE SELECCIONADO NO SE PUEDE DAR DE BAJA"); }; 
+            else { throw new ArgumentException("EL CLIENTE SELECCIONADO NO SE PUEDE DAR DE BAJA"); };
         }
 
         public bool Guardar(BECliente Objeto)
@@ -31,13 +28,13 @@ namespace MPP
 
             if (Objeto.Id != 0)
             {
-                Consulta_SQL = "UPDATE Personas SET Nombre='" + Objeto.Nombre + "',Apellido='" + Objeto.Apellido + "',Correo=" + Objeto.Correo + ",CUIT_DNI=" + Objeto.Cuit + "," +
-                    "CondicionVenta= " + Objeto.CondicionVenta + "WHERE ID_Persona = " + Objeto.Id;
+                Consulta_SQL = "UPDATE Personas SET Nombre='" + Objeto.Nombre + "',Apellido='" + Objeto.Apellido + "',Correo='" + Objeto.Correo + "',CUIT_DNI=" + Objeto.Cuit + "," +
+                    "CondicionVenta= '" + Objeto.CondicionVenta + "' WHERE ID_Persona = " + Objeto.Id;
             }
             else
             {
-                Consulta_SQL = "INSERT Personas(Nombre,Apellido,Correo,CUIT_DNI,CondicionVenta) values(" + Objeto.Nombre + ", '" + Objeto.Apellido +
-                    ", '" + Objeto.Correo + ", '" + Objeto.Cuit + ", '" + Objeto.CondicionVenta + ")";
+                Consulta_SQL = "INSERT Personas(Nombre,Apellido,Correo,CUIT_DNI,CondicionVenta) values('" + Objeto.Nombre + "', '" + Objeto.Apellido +
+                    "', '" + Objeto.Correo + "', '" + Objeto.Cuit + "', '" + Objeto.CondicionVenta + "')";
 
             };
             oDatos = new Acceso();
@@ -55,10 +52,13 @@ namespace MPP
             if (Ds.Tables[0].Rows.Count == 1)
             {
                 DataRow fila = Ds.Tables[0].Rows[0];
-                BECliente oBEcliente = new BECliente(
-                    Convert.ToInt32(fila["IdCliente"]), Convert.ToInt32(fila["CUIT_DNI"]), fila["CondicionVenta"].ToString(),
+                if (fila["CUIT_DNI"] != DBNull.Value)
+                {
+                    BECliente oBEcliente = new BECliente(
+                    Convert.ToInt32(fila["ID_Persona"]), fila["CUIT_DNI"].ToString(), fila["CondicionVenta"].ToString(),
                     fila["Nombre"].ToString(), fila["Apellido"].ToString(), fila["Correo"].ToString());
-                return oBEcliente;
+                    return oBEcliente;
+                }
             }
             return null;
 
@@ -75,10 +75,13 @@ namespace MPP
             {
                 foreach (DataRow fila in Ds.Tables[0].Rows)
                 {
-                    BECliente oBEcliente = new BECliente(
-                     Convert.ToInt32(fila["IdCliente"]), Convert.ToInt32(fila["CUIT_DNI"]), fila["CondicionVenta"].ToString(),
-                     fila["Nombre"].ToString(), fila["Apellido"].ToString(), fila["Correo"].ToString());
-                    ListaClientes.Add(oBEcliente);
+                    if (fila["CUIT_DNI"] != DBNull.Value)
+                    {
+                        BECliente oBEcliente = new BECliente(
+                        Convert.ToInt32(fila["ID_Persona"]), fila["CUIT_DNI"].ToString(), fila["CondicionVenta"].ToString(),
+                        fila["Nombre"].ToString(), fila["Apellido"].ToString(), fila["Correo"].ToString());
+                        ListaClientes.Add(oBEcliente);
+                    }
                 }
             }
             else { ListaClientes = null; }

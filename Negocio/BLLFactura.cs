@@ -1,17 +1,13 @@
 ﻿using Abstraccion;
 using BE;
 using MPP;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Negocio
 {
     public class BLLFactura : IGestor<BEFactura>
     {
-        MPPFactura oMPPFactura;
+        private MPPFactura oMPPFactura;
         public BLLFactura()
         {
             oMPPFactura = new MPPFactura();
@@ -41,6 +37,10 @@ namespace Negocio
         }
         #endregion
         #region METODOS NO GENERICOS
+        public void AgregarProducto(BEFactura oFactura, BEProductos oProducto)
+        {
+            oFactura.BEProductos.Add(oProducto);
+        }
         #endregion
     }
 }
