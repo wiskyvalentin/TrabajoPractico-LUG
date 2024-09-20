@@ -68,13 +68,42 @@ namespace MPP
             return null;
 
         }
+
+        public BEProductos AsignarValores(int IdObjeto,double Cantidad)
+        {
+            DataSet Ds;
+            oDatos = new Acceso();
+            string Consulta = "SELECT Id_Producto,Codigo,Descripcion,Precio,Descuento,Id_Proveedores FROM PRODUCTOS WHERE Id_Producto = " + IdObjeto.ToString();
+            Ds = oDatos.Leer(Consulta);
+
+            //rcorro la tabla dentro del Dataset y la paso a lista
+            if (Ds.Tables[0].Rows.Count == 1)
+            {
+                DataRow fila = Ds.Tables[0].Rows[0];
+
+                BEProductos oProductos = new BEProductos();
+                oProductos.Id = Convert.ToInt32(fila["Id_Producto"]);
+                oProductos.Codigo = fila["Codigo"].ToString();
+                oProductos.Descripcion = fila["Descripcion"].ToString();
+                oProductos.PrecioInd = Convert.ToDouble(fila["Precio"].ToString());
+                oProductos.Descuento = Convert.ToDouble(fila["Descuento"]);
+                oProductos.Cantidad = Cantidad;
+                MPPProveedores oMPPProveedores = new MPPProveedores();
+
+                oProductos.BEProveedor = oMPPProveedores.AsignarValores(Convert.ToInt32(fila["Id_Proveedores"]));
+
+                return oProductos;
+            }
+            return null;
+
+        }
         public List<BEProductos> ListarTodo(BEFactura Objeto)
         {
             DataSet Ds;
             List<BEProductos> Lista = new List<BEProductos>();
             oDatos = new Acceso();
             string Consulta = "SELECT Pro.Id_Producto,Pro.Codigo,Pro.Descripcion," +
-                "Pro.Precio,Pro.Descuento,Pro.Id_Proveedores FROM DetalleFacturas as DetFac JOIN Productos Pro " +
+                "Pro.Precio,Pro.Descuento,Pro.Id_Proveedores,DetFac.Cantidad FROM DetalleFacturas as DetFac JOIN Productos Pro " +
                 "ON DetFac.Id_Producto = Pro.Id_Producto WHERE DetFac.ID_Factura = " + Objeto.Id;
             Ds = oDatos.Leer(Consulta);
 
@@ -88,15 +117,16 @@ namespace MPP
                     oProductos.Descripcion = fila["Descripcion"].ToString();
                     oProductos.PrecioInd = Convert.ToDouble(fila["Precio"].ToString());
                     oProductos.Descuento = Convert.ToDouble(fila["Descuento"]);
+                    oProductos.Cantidad = Convert.ToDouble(fila["Cantidad"]);
                     MPPProveedores oMPPProveedores = new MPPProveedores();
 
-                    oProductos.BEProveedor = oMPPProveedores.AsignarValores(Convert.ToInt32(fila["Id_Clientes"]));
+                    oProductos.BEProveedor = oMPPProveedores.AsignarValores(Convert.ToInt32(fila["Id_Proveedores"]));
                     Lista.Add(oProductos);
                 }
 
             }
             else
-            { Lista = null; }
+            { }
             return Lista;
         }
         public List<BEProductos> ListarTodo()

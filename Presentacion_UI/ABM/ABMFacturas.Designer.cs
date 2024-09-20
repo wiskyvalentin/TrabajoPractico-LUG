@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ComboProducto = new System.Windows.Forms.ComboBox();
             this.LabelID = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -40,9 +40,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.TxtEstado = new System.Windows.Forms.TextBox();
-            this.btnAgregar = new System.Windows.Forms.Button();
             this.btnEliminar = new System.Windows.Forms.Button();
-            this.btnModificar = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.label7 = new System.Windows.Forms.Label();
@@ -50,9 +48,8 @@
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.LabelMontoTotal = new System.Windows.Forms.Label();
             this.ComboCliente = new System.Windows.Forms.ComboBox();
-            this.BtnAgregarProd = new System.Windows.Forms.Button();
-            this.BTNEliminarProd = new System.Windows.Forms.Button();
-            this.BtnModProd = new System.Windows.Forms.Button();
+            this.btnAgregar = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TxtCantidad)).BeginInit();
@@ -61,7 +58,7 @@
             // ComboProducto
             // 
             this.ComboProducto.FormattingEnabled = true;
-            this.ComboProducto.Location = new System.Drawing.Point(791, 137);
+            this.ComboProducto.Location = new System.Drawing.Point(549, 12);
             this.ComboProducto.Name = "ComboProducto";
             this.ComboProducto.Size = new System.Drawing.Size(121, 21);
             this.ComboProducto.TabIndex = 64;
@@ -87,7 +84,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(734, 141);
+            this.label6.Location = new System.Drawing.Point(492, 16);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(50, 13);
             this.label6.TabIndex = 61;
@@ -143,16 +140,6 @@
             this.TxtEstado.Size = new System.Drawing.Size(143, 20);
             this.TxtEstado.TabIndex = 53;
             // 
-            // btnAgregar
-            // 
-            this.btnAgregar.Location = new System.Drawing.Point(15, 427);
-            this.btnAgregar.Name = "btnAgregar";
-            this.btnAgregar.Size = new System.Drawing.Size(75, 23);
-            this.btnAgregar.TabIndex = 52;
-            this.btnAgregar.Text = "AGREGAR";
-            this.btnAgregar.UseVisualStyleBackColor = true;
-            this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
-            // 
             // btnEliminar
             // 
             this.btnEliminar.Location = new System.Drawing.Point(186, 427);
@@ -163,22 +150,12 @@
             this.btnEliminar.UseVisualStyleBackColor = true;
             this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
             // 
-            // btnModificar
-            // 
-            this.btnModificar.Location = new System.Drawing.Point(105, 427);
-            this.btnModificar.Name = "btnModificar";
-            this.btnModificar.Size = new System.Drawing.Size(75, 23);
-            this.btnModificar.TabIndex = 50;
-            this.btnModificar.Text = "MODIFICAR";
-            this.btnModificar.UseVisualStyleBackColor = true;
-            this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
-            // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(15, 141);
             this.dataGridView1.MultiSelect = false;
@@ -195,8 +172,8 @@
             // 
             this.dataGridView2.AllowUserToAddRows = false;
             this.dataGridView2.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dataGridView2.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dataGridView2.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle8;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Location = new System.Drawing.Point(734, 204);
             this.dataGridView2.MultiSelect = false;
@@ -204,13 +181,13 @@
             this.dataGridView2.ReadOnly = true;
             this.dataGridView2.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2.Size = new System.Drawing.Size(249, 207);
+            this.dataGridView2.Size = new System.Drawing.Size(351, 207);
             this.dataGridView2.TabIndex = 65;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(735, 177);
+            this.label7.Location = new System.Drawing.Point(493, 52);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(49, 13);
             this.label7.TabIndex = 66;
@@ -218,14 +195,14 @@
             // 
             // TxtCantidad
             // 
-            this.TxtCantidad.Location = new System.Drawing.Point(792, 174);
+            this.TxtCantidad.Location = new System.Drawing.Point(550, 49);
             this.TxtCantidad.Name = "TxtCantidad";
             this.TxtCantidad.Size = new System.Drawing.Size(121, 20);
             this.TxtCantidad.TabIndex = 67;
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(493, 16);
+            this.dateTimePicker1.Location = new System.Drawing.Point(812, 13);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker1.TabIndex = 68;
@@ -247,42 +224,32 @@
             this.ComboCliente.Size = new System.Drawing.Size(121, 21);
             this.ComboCliente.TabIndex = 70;
             // 
-            // BtnAgregarProd
+            // btnAgregar
             // 
-            this.BtnAgregarProd.Location = new System.Drawing.Point(737, 427);
-            this.BtnAgregarProd.Name = "BtnAgregarProd";
-            this.BtnAgregarProd.Size = new System.Drawing.Size(75, 23);
-            this.BtnAgregarProd.TabIndex = 73;
-            this.BtnAgregarProd.Text = "AGREGAR";
-            this.BtnAgregarProd.UseVisualStyleBackColor = true;
-            this.BtnAgregarProd.Click += new System.EventHandler(this.button1_Click);
+            this.btnAgregar.Location = new System.Drawing.Point(15, 427);
+            this.btnAgregar.Name = "btnAgregar";
+            this.btnAgregar.Size = new System.Drawing.Size(75, 23);
+            this.btnAgregar.TabIndex = 52;
+            this.btnAgregar.Text = "AGREGAR";
+            this.btnAgregar.UseVisualStyleBackColor = true;
+            this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
             // 
-            // BTNEliminarProd
+            // button1
             // 
-            this.BTNEliminarProd.Location = new System.Drawing.Point(908, 427);
-            this.BTNEliminarProd.Name = "BTNEliminarProd";
-            this.BTNEliminarProd.Size = new System.Drawing.Size(75, 23);
-            this.BTNEliminarProd.TabIndex = 72;
-            this.BTNEliminarProd.Text = "ELIMINAR";
-            this.BTNEliminarProd.UseVisualStyleBackColor = true;
-            // 
-            // BtnModProd
-            // 
-            this.BtnModProd.Location = new System.Drawing.Point(827, 427);
-            this.BtnModProd.Name = "BtnModProd";
-            this.BtnModProd.Size = new System.Drawing.Size(75, 23);
-            this.BtnModProd.TabIndex = 71;
-            this.BtnModProd.Text = "MODIFICAR";
-            this.BtnModProd.UseVisualStyleBackColor = true;
+            this.button1.Location = new System.Drawing.Point(676, 12);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(98, 23);
+            this.button1.TabIndex = 71;
+            this.button1.Text = "Agregar producto";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // ABMFacturas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(995, 476);
-            this.Controls.Add(this.BtnAgregarProd);
-            this.Controls.Add(this.BTNEliminarProd);
-            this.Controls.Add(this.BtnModProd);
+            this.ClientSize = new System.Drawing.Size(1097, 476);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.ComboCliente);
             this.Controls.Add(this.LabelMontoTotal);
             this.Controls.Add(this.dateTimePicker1);
@@ -301,7 +268,6 @@
             this.Controls.Add(this.TxtEstado);
             this.Controls.Add(this.btnAgregar);
             this.Controls.Add(this.btnEliminar);
-            this.Controls.Add(this.btnModificar);
             this.Controls.Add(this.dataGridView1);
             this.Name = "ABMFacturas";
             this.Text = "ABMFacturas";
@@ -326,9 +292,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox TxtEstado;
-        private System.Windows.Forms.Button btnAgregar;
         private System.Windows.Forms.Button btnEliminar;
-        private System.Windows.Forms.Button btnModificar;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.Label label7;
@@ -336,8 +300,7 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Label LabelMontoTotal;
         private System.Windows.Forms.ComboBox ComboCliente;
-        private System.Windows.Forms.Button BtnAgregarProd;
-        private System.Windows.Forms.Button BTNEliminarProd;
-        private System.Windows.Forms.Button BtnModProd;
+        private System.Windows.Forms.Button btnAgregar;
+        private System.Windows.Forms.Button button1;
     }
 }

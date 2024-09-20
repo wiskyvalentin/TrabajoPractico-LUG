@@ -10,7 +10,7 @@ namespace MPP
     public class MPPFactura : IGestor<BEFactura>
     {
         #region METODOS GENERICOS
-        Acceso oDatos;
+        private Acceso oDatos;
         public bool Baja(BEFactura Objeto)
         {
             string Consulta_SQL;
@@ -27,47 +27,39 @@ namespace MPP
         }
         public bool Guardar(BEFactura Objeto)
         {
-            List<string> Consulta_SQL = new List<string>();
+            string Consulta_SQL;
 
             //PARTE FACTURA
             if (Objeto.Id != 0)
             {
-
-                Consulta_SQL.Add("Update Facturas SET MontoTotal = " + Objeto.MontoTotal + ", MetodoPago = '" + Objeto.MetodoPago +
-                    "', Fecha ='" + Objeto.Fecha.ToString("MM/dd/yyyy") + "', Id_Clientes =" + Objeto.BECliente.Id + ",Estado='"+Objeto.Estado +"' WHERE Id_Factura = " + Objeto.Id);
-                
-                foreach (BEProductos Items in Objeto.BEProductos)
-                {
-                    Consulta_SQL.Add("UPDATE detallefacturas SET CANTIDAD = " + Items.Cantidad + "WHERE Id_Factura =" + Objeto.Id + "AND Id_Producto = " + Items.Id);
-                }
+                throw new Exception("La facturas no se pueden actualizar");
             }
 
             else
             {
-                Consulta_SQL.Add("INSERT into Facturas (MontoTotal, MetodoPago,Fecha, Id_Clientes,Estado) values(" + Objeto.MontoTotal + ", '" + Objeto.MetodoPago +
-                    "', " + Objeto.Fecha.ToString("MM/dd/yyyy") + "," + Objeto.BECliente+","+ Objeto.Estado +")");
-                foreach (BEProductos Items in Objeto.BEProductos)
-                {
-                    Consulta_SQL.Add("INSERT DetalleFacturas(Id_Producto,Cantidad) values(" + Items.Id + "," + Items.Cantidad + ")");
-                }
+                Consulta_SQL = "INSERT into Facturas (MontoTotal, MetodoPago,Fecha, Id_Clientes,Estado) values(" + Objeto.MontoTotal + ", '" + Objeto.MetodoPago +
+                    "', '" + Objeto.Fecha.ToString("MM/dd/yyyy") + "'," + Objeto.BECliente.Id + ",'" + Objeto.Estado + "')";
+
             }
             oDatos = new Acceso();
-            return oDatos.Escribir(Consulta_SQL);
-
+            oDatos.Escribir(Consulta_SQL);
+            Objeto.Id = ObtenerUltima().Id;
+            return GuardarProductos(Objeto);
         }
+
         public BEFactura AsignarValores(int Objeto)
         {
             DataSet Ds;
             oDatos = new Acceso();
             string Consulta = "SELECT Id_Factura, MontoTotal,MetodoPago,Fecha,Id_Clientes," +
-                "Id_Facturas_Productos,Estado FROM Facturas WHERE Id_Factura = " + Objeto.ToString();
+                "Estado FROM Facturas WHERE Id_Factura = " + Objeto.ToString();
             Ds = oDatos.Leer(Consulta);
 
             if (Ds.Tables[0].Rows.Count == 1)
             {
                 DataRow fila = Ds.Tables[0].Rows[0];
-                BEFactura bEFactura = new BEFactura();
-                BEFactura oFactura = bEFactura;
+                BEFactura oFactura = new BEFactura();
+
                 oFactura.Id = Convert.ToInt32(fila["Id_Factura"]);
                 oFactura.MetodoPago = fila["MetodoPago"].ToString();
                 oFactura.Fecha = Convert.ToDateTime(fila["Fecha"]);
@@ -88,7 +80,7 @@ namespace MPP
         {
             DataSet Ds;
             oDatos = new Acceso();
-            string Consulta = "SELECT Id_Factura, Estado,MontoTotal,MetodoPago,Fecha,Id_Clientes,Id_Facturas_Productos FROM Facturas";
+            string Consulta = "SELECT Id_Factura, Estado,MontoTotal,MetodoPago,Fecha,Id_Clientes FROM Facturas";
             Ds = oDatos.Leer(Consulta);
             List<BEFactura> ListaFacturas = new List<BEFactura>();
 
@@ -101,6 +93,7 @@ namespace MPP
                     BEFactura oFactura = new BEFactura();
                     oFactura.Id = Convert.ToInt32(fila["Id_Factura"]);
                     oFactura.MetodoPago = fila["MetodoPago"].ToString();
+                    oFactura.MontoTotal = Convert.ToDouble(fila["MontoTotal"]);
                     oFactura.Fecha = Convert.ToDateTime(fila["Fecha"]);
                     oFactura.Estado = fila["Estado"].ToString();
                     MPPCliente oMPPCliente = new MPPCliente();
@@ -117,6 +110,44 @@ namespace MPP
         }
         #endregion
         #region METODOS NO GENERICOS
+        public bool GuardarProductos(BEFactura Objeto)
+        {
+            List<string> Consulta_SQL = new List<string>();
+            foreach (BEProductos Items in Objeto.BEProductos)
+            {
+                Consulta_SQL.Add("INSERT DetalleFacturas(Id_Producto,Id_Factura,Cantidad) values(" + Items.Id + "," + Objeto.Id + "," + Items.Cantidad + ")");
+            }
+            oDatos = new Acceso();
+            return oDatos.Escribir(Consulta_SQL);
+        }
+
+        private BEFactura ObtenerUltima()
+        {
+            DataSet Ds;
+            oDatos = new Acceso();
+            string Consulta = "SELECT TOP 1 Id_Factura, MontoTotal,MetodoPago,Fecha,Id_Clientes," +
+                "Estado FROM Facturas ORDER BY Id_Factura DESC";
+            Ds = oDatos.Leer(Consulta);
+            BEFactura oFactura = new BEFactura();
+
+            if (Ds.Tables[0].Rows.Count == 1)
+            {
+                DataRow fila = Ds.Tables[0].Rows[0];
+
+                oFactura.Id = Convert.ToInt32(fila["Id_Factura"]);
+                oFactura.MetodoPago = fila["MetodoPago"].ToString();
+                oFactura.Fecha = Convert.ToDateTime(fila["Fecha"]);
+                oFactura.Estado = fila["Estado"].ToString();
+
+                MPPCliente oMPPCliente = new MPPCliente();
+                MPPProductos oMPPProducto = new MPPProductos();
+
+                oFactura.BECliente = oMPPCliente.AsignarValores(Convert.ToInt32(fila["Id_Clientes"]));
+                oFactura.BEProductos = oMPPProducto.ListarTodo(oFactura);
+
+            }
+            return oFactura;
+        }
 
         //BECliente BuscarCliente(int IdCliente)//consultar si paso el objeto entero!!
         //{

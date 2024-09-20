@@ -34,6 +34,11 @@ namespace Negocio
             return oMPPPRODUCTOS.AsignarValores(IdObjeto);
 
         }
+        public BEProductos AsignarValores(int IdObjeto,double Cantidad)
+        {
+            return oMPPPRODUCTOS.AsignarValores(IdObjeto,Cantidad);
+
+        }
 
         public List<BEProductos> ListarTodo()
         {

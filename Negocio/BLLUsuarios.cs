@@ -30,7 +30,7 @@ namespace Negocio
         {
             return oMPPUsuarios.ListarTodo();
         }
-        public BEUsuarios IniciarSesion(string usuario, string Contraseña)
+        public bool IniciarSesion(string usuario, string Contraseña)
         {
             return oMPPUsuarios.IniciarSesion(usuario, Contraseña);
         }

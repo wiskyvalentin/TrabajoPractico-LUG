@@ -16,7 +16,7 @@ namespace Presentacion_UI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Principal());
+            Application.Run(new InicioSesion());
         }
     }
 }

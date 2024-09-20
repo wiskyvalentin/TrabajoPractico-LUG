@@ -6,7 +6,7 @@ namespace BE
     public class BEFactura : Entidades
     {
         #region PROPIEDADES
-        
+
         public DateTime Fecha { get; set; }
         public string Estado { get; set; }
         public string MetodoPago { get; set; }
@@ -28,10 +28,9 @@ namespace BE
             {
                 foreach (var Productos in BEProductos)
                 {
-                    if (Productos.Cantidad != 0)
-                    {
-                        MontoTotal += (Productos.PrecioInd * Productos.Descuento) * Productos.Cantidad;
-                    }   
+
+                    MontoTotal += (Productos.PrecioInd - Productos.Descuento) * Productos.Cantidad;
+
                 }
                 return MontoTotal;
             }

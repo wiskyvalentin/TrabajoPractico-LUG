@@ -84,7 +84,7 @@ namespace MPP
             else { }
             return ListaUsuarios;
         }
-        public BEUsuarios IniciarSesion(string usuario, string contraseña)
+        public bool IniciarSesion(string usuario, string contraseña)
         {
 
             DataSet Ds;
@@ -96,13 +96,9 @@ namespace MPP
             //rcorro la tabla dentro del Dataset y la paso a lista
             if (Ds.Tables[0].Rows.Count == 1)
             {
-                DataRow fila = Ds.Tables[0].Rows[0];
-                BEUsuarios oBEUsuarios = new BEUsuarios(
-                    Convert.ToInt32(fila["IdCliente"]), fila["Nombre"].ToString(), fila["Apellido"].ToString(), fila["Correo"].ToString(),
-                    fila["Contraseña"].ToString());
-                return oBEUsuarios;
+              return true;
             }
-            return null;
+            return false;
         }
         private string Encriptar(string Cadena)
         {

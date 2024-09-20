@@ -1,6 +1,7 @@
 ﻿using BE;
 using Negocio;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -44,9 +45,11 @@ namespace Presentacion_UI.ABM
             //llamo al metodo de la BLL de localiadd para cargar las localidades
             this.dataGridView1.DataSource = OBLLFactura.ListarTodo();
 
-            this.dataGridView1.DataSource = null;
+            this.dataGridView2.DataSource = null;
+            List<BEProductos> list = new List<BEProductos>();
+
             //llamo al metodo de la BLL de localiadd para cargar las localidades
-            this.dataGridView1.DataSource = OBLLFactura.ListarTodo();
+            this.dataGridView2.DataSource = list;
 
          
             LimpiarCampos();
@@ -87,18 +90,23 @@ namespace Presentacion_UI.ABM
         private void btnAgregar_Click(object sender, EventArgs e)
         {
             DialogResult Respuesta;
+            if (oBEFactura.BEProductos.Count ==0)
+            {
+                MessageBox.Show("AGREGE UN PRODUCTO PARA CONTINUAR", "ALERTA", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             Respuesta = MessageBox.Show("¿Desea Agregar la Factura?", "ALERTA", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (Respuesta == DialogResult.Yes)
             {
                 oBEFactura.Estado = TxtEstado.Text.Trim();
                 oBEFactura.Fecha = dateTimePicker1.Value;
                 oBEFactura.MetodoPago = TxtMetodoPago.Text.Trim();
+                ComboCliente.ValueMember = "ID";
                 oBEFactura.BECliente = oBLLCliente.AsignarValores(Convert.ToInt32(ComboCliente.Text));
-                //oBEFactura.BEProductos = ;
-                foreach (DataGridViewRow item in dataGridView2.Rows)
-                {
-                    OBLLFactura.AgregarProducto(oBEFactura, oBLLProductos.AsignarValores(Convert.ToInt32(item.Cells["Id"].Value)));
-                }
+                //PRODUCTOS CARGADOS ANTES!
+                
+              
+                
                 oBEFactura.MontoTotal = oBEFactura.CalcularMontoTotal();
 
                 OBLLFactura.Guardar(oBEFactura);
@@ -106,36 +114,8 @@ namespace Presentacion_UI.ABM
             }
         }
 
-        private void btnModificar_Click(object sender, EventArgs e)
-        {
-            ModificarBTN();  
-        }
-        void ModificarBTN()
-        {
-            if (Convert.ToInt32(LabelID.Text) != 0)
-            {
-                DialogResult Respuesta;
-                Respuesta = MessageBox.Show("¿Desea modificar la Factura?", "ALERTA", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (Respuesta == DialogResult.Yes)
-                {
-                    oBEFactura.Id = Convert.ToInt32(LabelID.Text);
-                    oBEFactura.Estado = TxtEstado.Text.Trim();
-                    oBEFactura.Fecha = dateTimePicker1.Value;
-                    oBEFactura.MetodoPago = TxtMetodoPago.Text.Trim();
-                    ComboCliente.ValueMember = "ID";
-                    oBEFactura.BECliente = oBLLCliente.AsignarValores(Convert.ToInt32(ComboCliente.Text));
-                    //oBEFactura.BEProductos = oBLLProductos.ListarTodo(oBEFactura);
-                    foreach (DataGridViewRow item in dataGridView2.Rows)
-                    {
-                        OBLLFactura.AgregarProducto(oBEFactura, oBLLProductos.AsignarValores(Convert.ToInt32(item.Cells["Id"].Value)));
-                    }
-                    oBEFactura.MontoTotal = oBEFactura.CalcularMontoTotal();
 
-                    OBLLFactura.Guardar(oBEFactura);
-                    cargarGrilla();
-                }
-            }
-        }
+
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             if (Convert.ToInt32(LabelID.Text) != 0)
@@ -159,18 +139,22 @@ namespace Presentacion_UI.ABM
             
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            oBEProductos.Cantidad = Convert.ToDouble( TxtCantidad.Value);
-            ComboProducto.ValueMember = "ID";
-            OBLLFactura.AgregarProducto(oBEFactura, oBLLProductos.AsignarValores(Convert.ToInt32(ComboProducto.SelectedValue)));
-            oBEFactura.BEProductos.Add(oBLLProductos.AsignarValores(Convert.ToInt32(ComboProducto.SelectedValue)));
-            ModificarBTN();
 
-        }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+
+        }
+
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            dataGridView2.DataSource = null;
+            oBEProductos.Cantidad = Convert.ToDouble(TxtCantidad.Value);
+            ComboProducto.ValueMember = "ID";
+            oBEFactura.BEProductos.Add(oBLLProductos.AsignarValores(Convert.ToInt32(ComboProducto.SelectedValue), oBEProductos.Cantidad));
+            dataGridView2.DataSource = oBEFactura.BEProductos;
+            CargarCombo();
 
         }
     }
