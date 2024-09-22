@@ -28,12 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.LabelID = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.TxtDescuento = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.TxtDescripcion = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -74,22 +72,6 @@
             this.label6.Size = new System.Drawing.Size(56, 13);
             this.label6.TabIndex = 45;
             this.label6.Text = "Proveedor";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(237, 92);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(59, 13);
-            this.label4.TabIndex = 43;
-            this.label4.Text = "Descuento";
-            // 
-            // TxtDescuento
-            // 
-            this.TxtDescuento.Location = new System.Drawing.Point(302, 89);
-            this.TxtDescuento.Name = "TxtDescuento";
-            this.TxtDescuento.Size = new System.Drawing.Size(143, 20);
-            this.TxtDescuento.TabIndex = 42;
             // 
             // label3
             // 
@@ -173,8 +155,8 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(22, 131);
             this.dataGridView1.MultiSelect = false;
@@ -203,8 +185,6 @@
             this.Controls.Add(this.LabelID);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.TxtDescuento);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.TxtDescripcion);
             this.Controls.Add(this.label2);
@@ -229,8 +209,6 @@
         private System.Windows.Forms.Label LabelID;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox TxtDescuento;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox TxtDescripcion;
         private System.Windows.Forms.Label label2;

@@ -157,5 +157,10 @@ namespace Presentacion_UI.ABM
             CargarCombo();
 
         }
+
+        private void ComboCliente_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

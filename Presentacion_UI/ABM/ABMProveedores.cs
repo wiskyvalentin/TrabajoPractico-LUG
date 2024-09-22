@@ -52,12 +52,12 @@ namespace Presentacion_UI.ABM
             // Acceder al valor de la celda por el nombre de la columna
             if (dataGridView1.SelectedCells.Count > 0)
             {
-                LabelID.Text = dataGridView1.CurrentRow.Cells["Id"].Value.ToString();
-                TxtCBU.Text = dataGridView1.CurrentRow.Cells["CBU"].Value.ToString();
-                TxtNombre.Text = dataGridView1.CurrentRow.Cells["Nombre"].Value.ToString();
-                TxtCorreo.Text = dataGridView1.CurrentRow.Cells["Correo"].Value.ToString();
-                TxtApellido.Text = dataGridView1.CurrentRow.Cells["Apellido"].Value.ToString();
-                TxtDireccion.Text = dataGridView1.CurrentRow.Cells["Direccion"].Value.ToString();
+                LabelID.Text = dataGridView1.CurrentRow.Cells["Id"].Value.ToString().Trim();
+                TxtCBU.Text = dataGridView1.CurrentRow.Cells["CBU"].Value.ToString().Trim();
+                TxtNombre.Text = dataGridView1.CurrentRow.Cells["Nombre"].Value.ToString().Trim();
+                TxtCorreo.Text = dataGridView1.CurrentRow.Cells["Correo"].Value.ToString().Trim();
+                TxtApellido.Text = dataGridView1.CurrentRow.Cells["Apellido"].Value.ToString().Trim();
+                TxtDireccion.Text = dataGridView1.CurrentRow.Cells["Direccion"].Value.ToString().Trim();
             }
         }
 

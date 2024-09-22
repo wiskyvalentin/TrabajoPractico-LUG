@@ -1,7 +1,6 @@
 ﻿using BE;
 using Negocio;
 using System;
-using System.Diagnostics.Eventing.Reader;
 using System.Windows.Forms;
 
 namespace Presentacion_UI.ABM
@@ -25,15 +24,24 @@ namespace Presentacion_UI.ABM
             Respuesta = MessageBox.Show("¿Desea Agregar el producto?", "ALERTA", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (Respuesta == DialogResult.Yes)
             {
-                oBEProductos.Codigo = TxtCodigo.Text.Trim();
-                oBEProductos.Descripcion = TxtDescripcion.Text.Trim();
-                oBEProductos.Descuento = Convert.ToDouble(TxtDescuento.Text);
-                oBEProductos.PrecioInd = Convert.ToDouble(TxtPrecio.Text);
-                oBEProductos.BEProveedor = oBLLProveedores.AsignarValores(Convert.ToInt32(ComboProveedor.Text));
+                try
+                {
+                    oBEProductos.Codigo = TxtCodigo.Text.Trim();
+                    oBEProductos.Descripcion = TxtDescripcion.Text.Trim();
+                    oBEProductos.PrecioInd = Convert.ToDouble(TxtPrecio.Text);
+                    ComboProveedor.ValueMember = "ID";
+                    oBEProductos.BEProveedor = oBLLProveedores.AsignarValores(Convert.ToInt32(ComboProveedor.Text));
 
-                oBLLProductos.Guardar(oBEProductos);
+                    oBLLProductos.Guardar(oBEProductos);
+                    
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("ERROR AL CARGAR LOS DATOS", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
                 cargarGrilla();
             }
+          
         }
 
         private void btnModificar_Click(object sender, EventArgs e)
@@ -42,14 +50,23 @@ namespace Presentacion_UI.ABM
             Respuesta = MessageBox.Show("¿Desea modificar el producto?", "ALERTA", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (Respuesta == DialogResult.Yes)
             {
+                try
+                {
+
                 oBEProductos.Id = Convert.ToInt32(LabelID.Text);
                 oBEProductos.Codigo = TxtCodigo.Text.Trim();
                 oBEProductos.Descripcion = TxtDescripcion.Text.Trim();
-                oBEProductos.Descuento = Convert.ToDouble(TxtDescuento.Text);
                 oBEProductos.PrecioInd = Convert.ToDouble(TxtPrecio.Text);
+                ComboProveedor.ValueMember = "ID";
                 oBEProductos.BEProveedor = oBLLProveedores.AsignarValores(Convert.ToInt32(ComboProveedor.Text));
 
                 oBLLProductos.Guardar(oBEProductos);
+                }
+                catch (Exception)
+                {
+
+                    MessageBox.Show("ERROR AL CARGAR LOS DATOS", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
                 cargarGrilla();
             }
         }
@@ -74,7 +91,6 @@ namespace Presentacion_UI.ABM
             LabelID.Text = "0";
             TxtCodigo.Text = string.Empty;
             TxtDescripcion.Text = string.Empty;
-            TxtDescuento.Text = string.Empty;
             TxtPrecio.Text = string.Empty;
             ComboProveedor.Text = string.Empty;
         }
@@ -85,16 +101,26 @@ namespace Presentacion_UI.ABM
                 // Acceder al valor de la celda por el nombre de la columna
                 if (dataGridView1.SelectedCells.Count > 0)
                 {
-                    LabelID.Text = dataGridView1.CurrentRow.Cells["Id"].Value.ToString();
-
+                    LabelID.Text = dataGridView1.CurrentRow.Cells["Id"].Value.ToString().Trim();
+                    TxtDescripcion.Text = dataGridView1.CurrentRow.Cells["Descripcion"].Value.ToString().Trim();
+                    TxtCodigo.Text = dataGridView1.CurrentRow.Cells["Codigo"].Value.ToString().Trim();
+                    TxtPrecio.Text = dataGridView1.CurrentRow.Cells["Precioind"].Value.ToString().Trim();
+                    if (dataGridView1.CurrentRow.Cells["BEProveedor"].Value == null)
+                    {
+                        ComboProveedor.Text = "";
+                    }
+                    else
+                    {
+                        ComboProveedor.Text = dataGridView1.CurrentRow.Cells["BEProveedor"].Value.ToString().Trim();
+                    }
 
                 }
             }
-              catch (Exception ex)
+            catch (Exception ex)
             { MessageBox.Show(ex.Message); }
 
         }
-        
+
 
         private void CargarCombo()
         {
@@ -102,10 +128,22 @@ namespace Presentacion_UI.ABM
         }
         private void cargarGrilla()
         {
-            this.dataGridView1.DataSource = null;
-            //llamo al metodo de la BLL de localiadd para cargar las localidades
-            this.dataGridView1.DataSource = oBLLProductos.ListarTodo();
-            LimpiarCampos();
+            try
+            {
+                this.dataGridView1.DataSource = null;
+                //llamo al metodo de la BLL de localiadd para cargar las localidades
+                this.dataGridView1.DataSource = oBLLProductos.ListarTodo();
+                dataGridView1.Columns["Descuento"].Visible = false;
+                dataGridView1.Columns["Cantidad"].Visible = false;
+
+                LimpiarCampos();
+            }
+            catch (Exception)
+            {
+             MessageBox.Show("NINGUN PRODUCTO CARGADO!", "ALERTA", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+
         }
 
         private void ABMProductos_Load(object sender, EventArgs e)

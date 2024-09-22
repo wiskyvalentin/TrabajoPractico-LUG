@@ -28,13 +28,13 @@ namespace MPP
 
             if (Objeto.Id != 0)
             {
-                Consulta_SQL = "UPDATE Productos SET Codigo='" + Objeto.Codigo + "',Descripcion='" + Objeto.Descripcion + "',Precio=" + Objeto.PrecioInd + ",Descuento=" + 1 + "," +
+                Consulta_SQL = "UPDATE Productos SET Codigo='" + Objeto.Codigo + "',Descripcion='" + Objeto.Descripcion + "',Precio=" + Objeto.PrecioInd + "," +
                     "Id_Proveedores= " + Objeto.BEProveedor.Id + "WHERE Id_Producto = " + Objeto.Id;
             }
             else
             {
-                Consulta_SQL = "INSERT Productos(Codigo,Descripcion,Precio,Descuento,Id_Proveedores) values(" + Objeto.Codigo + ", '" + Objeto.Descripcion +
-                    ", '" + Objeto.PrecioInd + ", '" + Objeto.Descuento + ", '" + Objeto.BEProveedor.Id + ")";
+                Consulta_SQL = "INSERT Productos(Codigo,Descripcion,Precio,Id_Proveedores) values('" + Objeto.Codigo + "', '" + Objeto.Descripcion +
+                    "', " + Objeto.PrecioInd + "," + Objeto.BEProveedor.Id + ")";
 
             };
             oDatos = new Acceso();
@@ -45,7 +45,7 @@ namespace MPP
         {
             DataSet Ds;
             oDatos = new Acceso();
-            string Consulta = "SELECT Id_Producto,Codigo,Descripcion,Precio,Descuento,Id_Proveedores FROM PRODUCTOS WHERE Id_Producto = " + IdObjeto.ToString();
+            string Consulta = "SELECT Id_Producto,Codigo,Descripcion,Precio,Id_Proveedores FROM PRODUCTOS WHERE Id_Producto = " + IdObjeto.ToString();
             Ds = oDatos.Leer(Consulta);
 
             //rcorro la tabla dentro del Dataset y la paso a lista
@@ -58,7 +58,7 @@ namespace MPP
                 oProductos.Codigo = fila["Codigo"].ToString();
                 oProductos.Descripcion = fila["Descripcion"].ToString();
                 oProductos.PrecioInd = Convert.ToDouble(fila["Precio"].ToString());
-                oProductos.Descuento = Convert.ToDouble(fila["Descuento"]);
+                //oProductos.Descuento = Convert.ToDouble(fila["Descuento"]);
                 MPPProveedores oMPPProveedores = new MPPProveedores();
 
                 oProductos.BEProveedor = oMPPProveedores.AsignarValores(Convert.ToInt32(fila["Id_Proveedores"]));
@@ -73,7 +73,7 @@ namespace MPP
         {
             DataSet Ds;
             oDatos = new Acceso();
-            string Consulta = "SELECT Id_Producto,Codigo,Descripcion,Precio,Descuento,Id_Proveedores FROM PRODUCTOS WHERE Id_Producto = " + IdObjeto.ToString();
+            string Consulta = "SELECT Id_Producto,Codigo,Descripcion,Precio,Id_Proveedores FROM PRODUCTOS WHERE Id_Producto = " + IdObjeto.ToString();
             Ds = oDatos.Leer(Consulta);
 
             //rcorro la tabla dentro del Dataset y la paso a lista
@@ -86,7 +86,7 @@ namespace MPP
                 oProductos.Codigo = fila["Codigo"].ToString();
                 oProductos.Descripcion = fila["Descripcion"].ToString();
                 oProductos.PrecioInd = Convert.ToDouble(fila["Precio"].ToString());
-                oProductos.Descuento = Convert.ToDouble(fila["Descuento"]);
+                //oProductos.Descuento = Convert.ToDouble(fila["Descuento"]);
                 oProductos.Cantidad = Cantidad;
                 MPPProveedores oMPPProveedores = new MPPProveedores();
 
@@ -103,7 +103,7 @@ namespace MPP
             List<BEProductos> Lista = new List<BEProductos>();
             oDatos = new Acceso();
             string Consulta = "SELECT Pro.Id_Producto,Pro.Codigo,Pro.Descripcion," +
-                "Pro.Precio,Pro.Descuento,Pro.Id_Proveedores,DetFac.Cantidad FROM DetalleFacturas as DetFac JOIN Productos Pro " +
+                "Pro.Precio,Pro.Id_Proveedores,DetFac.Cantidad,DetFac.Descuento FROM DetalleFacturas as DetFac JOIN Productos Pro " +
                 "ON DetFac.Id_Producto = Pro.Id_Producto WHERE DetFac.ID_Factura = " + Objeto.Id;
             Ds = oDatos.Leer(Consulta);
 
@@ -133,7 +133,7 @@ namespace MPP
         {
             DataSet Ds;
             oDatos = new Acceso();
-            string Consulta = "SELECT Id_Producto,Codigo,Descripcion,Precio,Descuento,Id_Proveedores FROM Productos";
+            string Consulta = "SELECT Id_Producto,Codigo,Descripcion,Precio,Id_Proveedores FROM Productos";
             Ds = oDatos.Leer(Consulta);
             List<BEProductos> ListaProductos = new List<BEProductos>();
             if (Ds.Tables[0].Rows.Count > 0)
@@ -145,9 +145,8 @@ namespace MPP
                     oProducto.Codigo = fila["Codigo"].ToString();
                     oProducto.Descripcion = fila["Descripcion"].ToString();
                     oProducto.PrecioInd = Convert.ToDouble(fila["Precio"]);
-                    oProducto.Descuento = Convert.ToDouble(fila["Descuento"]);
                     MPPProveedores oMPPPROVEEDOR = new MPPProveedores();
-                    oProducto.BEProveedor = oMPPPROVEEDOR.AsignarValores(oProducto.Id);
+                    oProducto.BEProveedor = oMPPPROVEEDOR.AsignarValores(Convert.ToInt32(fila["Id_Proveedores"]));
                     ListaProductos.Add(oProducto);
                 }
             }

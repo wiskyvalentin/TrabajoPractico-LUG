@@ -98,7 +98,14 @@ namespace MPP
                     oFactura.Estado = fila["Estado"].ToString();
                     MPPCliente oMPPCliente = new MPPCliente();
                     MPPProductos oMPPProducto = new MPPProductos();
-                    oFactura.BECliente = oMPPCliente.AsignarValores(Convert.ToInt32(fila["Id_Clientes"]));
+                     if (fila["Id_Clientes"] == DBNull.Value)
+                    {
+                        oFactura.BECliente.Nombre = "Consumidor Final";
+                    }
+                    else
+                    {
+                        oFactura.BECliente = oMPPCliente.AsignarValores(Convert.ToInt32(fila["Id_Clientes"]));
+                    }
                     oFactura.BEProductos = oMPPProducto.ListarTodo(oFactura);
                     ListaFacturas.Add(oFactura);
                 }
@@ -115,7 +122,7 @@ namespace MPP
             List<string> Consulta_SQL = new List<string>();
             foreach (BEProductos Items in Objeto.BEProductos)
             {
-                Consulta_SQL.Add("INSERT DetalleFacturas(Id_Producto,Id_Factura,Cantidad) values(" + Items.Id + "," + Objeto.Id + "," + Items.Cantidad + ")");
+                Consulta_SQL.Add("INSERT DetalleFacturas(Id_Producto,Id_Factura,Cantidad,Descuento) values(" + Items.Id + "," + Objeto.Id + "," + Items.Cantidad + ","+Items.Descuento+")");
             }
             oDatos = new Acceso();
             return oDatos.Escribir(Consulta_SQL);

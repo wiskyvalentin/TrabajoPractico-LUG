@@ -26,6 +26,7 @@ namespace BE
         {
             try
             {
+                MontoTotal = 0;
                 foreach (var Productos in BEProductos)
                 {
 

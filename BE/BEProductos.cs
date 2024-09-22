@@ -34,5 +34,6 @@ namespace BE
         {
             return this.Codigo + "- " + this.Descripcion + " " + this.Id + " ";
         }
+        
     }
 }

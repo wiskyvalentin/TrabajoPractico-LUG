@@ -1,4 +1,5 @@
 ﻿using Presentacion_UI.ABM;
+using Presentacion_UI.Ventas;
 using System;
 using System.Windows.Forms;
 
@@ -43,6 +44,13 @@ namespace Presentacion_UI
         private void facturasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form formularioHijo = new ABMFacturas();  // Crear instancia del formulario hijo
+            formularioHijo.MdiParent = this;  // Establecer el contenedor MDI como padre
+            formularioHijo.Show();
+        }
+
+        private void nuevaVentaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form formularioHijo = new NuevaVenta();  // Crear instancia del formulario hijo
             formularioHijo.MdiParent = this;  // Establecer el contenedor MDI como padre
             formularioHijo.Show();
         }
