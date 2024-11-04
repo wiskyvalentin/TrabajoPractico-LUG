@@ -10,65 +10,83 @@ namespace MPP
     public class MPPProveedores : IGestor<BEProveedores>
     {
         private Acceso oDatos;
-        private string Consulta_SQL;
 
         public bool Baja(BEProveedores Objeto)
         {
             if (Objeto.Id != 0)
             {
-                Consulta_SQL = "DELETE FROM Personas WHERE ID_Persona = " + Objeto.Id;
                 oDatos = new Acceso();
-                return oDatos.Escribir(Consulta_SQL);
-            }
-            else { throw new ArgumentException("EL PROVEEDOR SELECCIONADO NO SE PUEDE DAR DE BAJA"); };
-        }
-
-        public bool Guardar(BEProveedores Objeto)
-        {
-            if (Objeto.Id != 0)
-            {
-                Consulta_SQL = "UPDATE Personas SET Nombre='" + Objeto.Nombre + "',Apellido='" + Objeto.Apellido + "',Correo='" + Objeto.Correo + "',CBU='" + Objeto.CBU + "'," +
-                    "Direccion= '" + Objeto.Direccion + "' WHERE ID_Persona = " + Objeto.Id;
+                var parametros = new Dictionary<string, object>
+                {
+                    { "@Id", Objeto.Id }
+                };
+                return oDatos.Escribir("sp_BajaProveedor", parametros);
             }
             else
             {
-                Consulta_SQL = "INSERT Personas(Nombre,Apellido,Correo,CBU,Direccion) values('" + Objeto.Nombre + "', '" + Objeto.Apellido +
-                    "', '" + Objeto.Correo + "', '" + Objeto.CBU + "', '" + Objeto.Direccion + "')";
-
-            };
-            oDatos = new Acceso();
-            return oDatos.Escribir(Consulta_SQL);
+                throw new ArgumentException("EL PROVEEDOR SELECCIONADO NO SE PUEDE DAR DE BAJA");
+            }
         }
+
+
+        public bool Guardar(BEProveedores Objeto)
+        {
+            oDatos = new Acceso();
+            var parametros = new Dictionary<string, object>
+            {
+                { "@Nombre", Objeto.Nombre },
+                { "@Apellido", Objeto.Apellido },
+                { "@Correo", Objeto.Correo },
+                { "@CBU", Objeto.CBU },
+                { "@Direccion", Objeto.Direccion }
+            };
+
+            if (Objeto.Id != 0)
+            {
+                parametros.Add("@Id", Objeto.Id);
+                return oDatos.Escribir("spActualizar_Proveedor", parametros);
+            }
+            else
+            {
+                return oDatos.Escribir("spInsertar_Proveedor", parametros);
+            }
+        }
+
 
         public BEProveedores AsignarValores(int IdObjeto)
         {
-            DataSet Ds;
             oDatos = new Acceso();
-            string Consulta = "SELECT ID_Persona,Nombre,Apellido,Correo,CBU,Direccion FROM PERSONAS WHERE ID_Persona = " + IdObjeto.ToString();
-            Ds = oDatos.Leer(Consulta);
+            var parametros = new Dictionary<string, object>
+            {
+                { "@Id", IdObjeto }
+            };
 
-            //rcorro la tabla dentro del Dataset y la paso a lista
+            DataSet Ds = oDatos.Leer("spObtener_Proveedor_Por_Id", parametros);
+
             if (Ds.Tables[0].Rows.Count == 1)
             {
-
                 DataRow fila = Ds.Tables[0].Rows[0];
                 if (fila["Direccion"] != DBNull.Value)
                 {
                     BEProveedores oBEProveedores = new BEProveedores(
-                    Convert.ToInt32(fila["ID_Persona"]), fila["Nombre"].ToString(), fila["Apellido"].ToString(), fila["Correo"].ToString(),
-                    fila["Direccion"].ToString(), fila["CBU"].ToString());
+                        Convert.ToInt32(fila["ID_Persona"]),
+                        fila["Nombre"].ToString(),
+                        fila["Apellido"].ToString(),
+                        fila["Correo"].ToString(),
+                        fila["Direccion"].ToString(),
+                        fila["CBU"].ToString());
                     return oBEProveedores;
                 }
             }
             return null;
         }
 
+
         public List<BEProveedores> ListarTodo()
         {
-            DataSet Ds;
             oDatos = new Acceso();
-            string Consulta = "SELECT ID_Persona,Nombre,Apellido,Correo,CBU,Direccion FROM Personas";
-            Ds = oDatos.Leer(Consulta);
+            DataSet Ds = oDatos.Leer("spListar_Proveedores", new Dictionary<string, object>());
+
             List<BEProveedores> ListaProveedores = new List<BEProveedores>();
             if (Ds.Tables[0].Rows.Count > 0)
             {
@@ -77,15 +95,28 @@ namespace MPP
                     if (fila["Direccion"] != DBNull.Value)
                     {
                         BEProveedores oBEProveedor = new BEProveedores(
-                        Convert.ToInt32(fila["ID_Persona"]), fila["Nombre"].ToString(), fila["Apellido"].ToString(), fila["Correo"].ToString(),
-                        fila["Direccion"].ToString(), fila["CBU"].ToString());
+                            Convert.ToInt32(fila["ID_Persona"]),
+                            fila["Nombre"].ToString(),
+                            fila["Apellido"].ToString(),
+                            fila["Correo"].ToString(),
+                            fila["Direccion"].ToString(),
+                            fila["CBU"].ToString());
+
                         ListaProveedores.Add(oBEProveedor);
                     }
-
                 }
             }
-            else { ListaProveedores = null; }
+            else
+            {
+                ListaProveedores = null;
+            }
+
             return ListaProveedores;
         }
+
+
+        #region transacciones
+      
+        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration; // para usar el app.config
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -9,158 +9,223 @@ namespace DAL
     public class Acceso
     {
         private SqlConnection oCnn = new SqlConnection(ConfigurationManager.ConnectionStrings["ConexionString"].ToString());
-        ////declaro el objeto transacction
-        //private SqlTransaction Tranx;
-        //leo un escalar-
-        public bool LeerScalar(string consulta)
-        {
-            oCnn.Open();
-            //uso el constructor del objeto Command
-            SqlCommand cmd = new SqlCommand(consulta, oCnn);
-            cmd.CommandType = CommandType.Text;
-            try
-            {
-                int Respuesta = Convert.ToInt32(cmd.ExecuteScalar());
-                oCnn.Close();
-                if (Respuesta > 0)
-                { return true; }
-                else
-                { return false; }
-            }
-            catch (SqlException ex)
-            { throw ex; }
-        }
 
-        public DataSet Leer(string Consulta_SQL)
+        // LeerScalar usando un procedimiento almacenado
+        public bool LeerScalar(string nombreSP, Dictionary<string, object> parametros)
         {
-            DataSet Ds = new DataSet();
+            bool resultado = false;
+
             try
             {
-                //creo el data adapter
-                SqlDataAdapter Da = new SqlDataAdapter(Consulta_SQL, oCnn);
-                //lleno el DataSet con el metodo fill
-                Da.Fill(Ds);
+                oCnn.Open();
+                SqlCommand cmd = new SqlCommand(nombreSP, oCnn)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                // Agregar parámetros al procedimiento almacenado
+                foreach (var param in parametros)
+                {
+                    cmd.Parameters.AddWithValue(param.Key, param.Value);
+                }
+
+                int respuesta = Convert.ToInt32(cmd.ExecuteScalar());
+                resultado = respuesta > 0;
             }
-            catch (SqlException ex)
-            { throw ex; }
+            catch (SqlException sqlEx)
+            {
+                // Captura de excepciones SQL específicas
+                throw new Exception($"Error SQL al ejecutar el procedimiento almacenado '{nombreSP}': {sqlEx.Message}", sqlEx);
+            }
+            catch (InvalidOperationException opEx)
+            {
+                // Captura de excepciones por operaciones no válidas (por ejemplo, conexión ya abierta)
+                throw new Exception($"Operación inválida al ejecutar '{nombreSP}': {opEx.Message}", opEx);
+            }
             catch (Exception ex)
-            { throw ex; }
+            {
+                // Captura de cualquier otra excepción
+                throw new Exception($"Error inesperado en '{nombreSP}': {ex.Message}", ex);
+            }
             finally
             {
-                oCnn.Close();
+                // Asegurarse de cerrar la conexión incluso si hay una excepción
+                if (oCnn.State == ConnectionState.Open)
+                {
+                    oCnn.Close();
+                }
+            }
+
+            return resultado;
+        }
+
+
+        // Leer con procedimiento almacenado
+        public DataSet Leer(string nombreSP, Dictionary<string, object> parametros)
+        {
+            DataSet Ds = new DataSet();
+            SqlCommand cmd = new SqlCommand(nombreSP, oCnn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            // Agregar parámetros al procedimiento almacenado
+            foreach (var param in parametros)
+            {
+                cmd.Parameters.AddWithValue(param.Key, param.Value);
+            }
+
+            try
+            {
+                SqlDataAdapter Da = new SqlDataAdapter(cmd);
+                Da.Fill(Ds);
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception($"Error SQL al ejecutar '{nombreSP}': {sqlEx.Message}", sqlEx);
+            }
+            catch (InvalidOperationException opEx)
+            {
+                throw new Exception($"Operación inválida al ejecutar '{nombreSP}': {opEx.Message}", opEx);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error inesperado en '{nombreSP}': {ex.Message}", ex);
+            }
+            finally
+            {
+                if (oCnn.State == ConnectionState.Open)
+                {
+                    oCnn.Close();
+                }
             }
             return Ds;
         }
 
-        //realizo un método escribir generico
-        public bool Escribir(string Consulta_SQL)
+        // Escribir con un solo procedimiento almacenado
+        public bool Escribir(string nombreSP, Dictionary<string, object> parametros)
         {
-
-            if (Consulta_SQL == null || Consulta_SQL.Length == 0)
-                throw new ArgumentException("El array de consultas SQL está vacío o es nulo.");
-
             try
             {
-                // Abrir la conexión
                 oCnn.Open();
-
-                // Iniciar la transacción
-                using (SqlTransaction Tranx = oCnn.BeginTransaction())
+                using (SqlTransaction tranx = oCnn.BeginTransaction())
                 {
-                    using (SqlCommand cmd = oCnn.CreateCommand())
+                    SqlCommand cmd = new SqlCommand(nombreSP, oCnn)
                     {
-                        cmd.CommandType = CommandType.Text;
-                        cmd.Connection = oCnn;
-                        cmd.Transaction = Tranx;  // Asociar la transacción al comando
+                        CommandType = CommandType.StoredProcedure,
+                        Transaction = tranx
+                    };
 
-                        try
-                        {               
-                                cmd.CommandText =Consulta_SQL;
-                                int respuesta = cmd.ExecuteNonQuery();
-                           
-
-                            // Confirmar la transacción
-                            Tranx.Commit();
-                            return true;
-                        }
-                        catch (SqlException)
-                        {
-                            // Si ocurre un error en SQL, hacer rollback
-                            Tranx.Rollback();
-                            throw;
-                        }
-                        catch (Exception)
-                        {
-                            // Si ocurre otro tipo de error, hacer rollback
-                            Tranx.Rollback();
-                            throw;
-                        }
+                    foreach (var param in parametros)
+                    {
+                        cmd.Parameters.AddWithValue(param.Key, param.Value);
                     }
+
+                    cmd.ExecuteNonQuery();
+                    tranx.Commit();
+                    return true;
                 }
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception($"Error SQL al ejecutar '{nombreSP}': {sqlEx.Message}", sqlEx);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error inesperado al ejecutar '{nombreSP}': {ex.Message}", ex);
             }
             finally
             {
-                // Asegurarse de cerrar la conexión siempre
-                oCnn.Close();
+                if (oCnn.State == ConnectionState.Open)
+                {
+                    oCnn.Close();
+                }
             }
-
         }
 
-        public bool Escribir(List<string> Consulta_SQL)
+
+        // Escribir múltiples procedimientos almacenados
+        public bool Escribir(List<string> nombresSP, List<Dictionary<string, object>> parametrosList)
         {
-            if (Consulta_SQL == null || Consulta_SQL.Count == 0)
-                throw new ArgumentException("La lista de consultas SQL está vacía o es nula.");
+            if (nombresSP == null || parametrosList == null || nombresSP.Count != parametrosList.Count)
+                throw new ArgumentException("Las listas de nombres de SP y parámetros no coinciden.");
 
             try
             {
-                // Abrir la conexión
                 oCnn.Open();
-
-                // Iniciar la transacción
-                using (SqlTransaction Tranx = oCnn.BeginTransaction())
+                using (SqlTransaction tranx = oCnn.BeginTransaction())
                 {
-                    using (SqlCommand cmd = oCnn.CreateCommand())
+                    for (int i = 0; i < nombresSP.Count; i++)
                     {
-                        cmd.CommandType = CommandType.Text;
-                        cmd.Connection = oCnn;
-                        cmd.Transaction = Tranx;  // Asociar la transacción al comando
+                        SqlCommand cmd = new SqlCommand(nombresSP[i], oCnn)
+                        {
+                            CommandType = CommandType.StoredProcedure,
+                            Transaction = tranx
+                        };
 
-                        try
+                        foreach (var param in parametrosList[i])
                         {
-                            // Ejecutar todas las consultas en la lista
-                            foreach (var consulta in Consulta_SQL)
-                            {
-                                cmd.CommandText = consulta;  // Asignar la consulta al comando
-                                int respuesta = cmd.ExecuteNonQuery();  // Ejecutar la consulta
-                            }
+                            cmd.Parameters.AddWithValue(param.Key, param.Value);
+                        }
 
-                            // Confirmar la transacción
-                            Tranx.Commit();
-                            return true;
-                        }
-                        catch (SqlException)
-                        {
-                            // Si ocurre un error en SQL, hacer rollback
-                            Tranx.Rollback();
-                            throw;
-                        }
-                        catch (Exception)
-                        {
-                            // Si ocurre otro tipo de error, hacer rollback
-                            Tranx.Rollback();
-                            throw;
-                        }
+                        cmd.ExecuteNonQuery();
                     }
+                    tranx.Commit();
+                    return true;
                 }
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception($"Error SQL al ejecutar uno de los procedimientos almacenados: {sqlEx.Message}", sqlEx);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error inesperado en la transacción de múltiples procedimientos almacenados.", ex);
             }
             finally
             {
-                // Asegurarse de cerrar la conexión siempre
-                oCnn.Close();
+                if (oCnn.State == ConnectionState.Open)
+                {
+                    oCnn.Close();
+                }
+            }
+        }
+        public bool GrabarCambios(string nombreTabla, DataSet dset)
+        {
+            using (SqlDataAdapter da = new SqlDataAdapter($"SELECT * FROM {nombreTabla}", oCnn))
+            {
+                SqlCommandBuilder cb = new SqlCommandBuilder(da);
+                da.UpdateCommand = cb.GetUpdateCommand();
+                da.DeleteCommand = cb.GetDeleteCommand();
+                da.InsertCommand = cb.GetInsertCommand();
+                da.ContinueUpdateOnError = false;
+
+                try
+                {
+                    oCnn.Open();
+                    // Persistir los cambios en la base de datos
+                    da.Update(dset.Tables[0]);
+                    return true;
+                }
+                catch (SqlException sqlEx)
+                {
+                    throw new Exception($"Error SQL al guardar cambios en la tabla '{nombreTabla}': {sqlEx.Message}", sqlEx);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Error inesperado al guardar cambios en la tabla '{nombreTabla}': {ex.Message}", ex);
+                }
+                finally
+                {
+                    if (oCnn.State == ConnectionState.Open)
+                    {
+                        oCnn.Close();
+                    }
+                }
             }
         }
 
     }
 
+
 }
-       
+
+

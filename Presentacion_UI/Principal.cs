@@ -21,7 +21,7 @@ namespace Presentacion_UI
 
         private void proveedoresToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form formularioHijo = new ABMProveedores();  // Crear instancia del formulario hijo
+            Form formularioHijo = new ABMProveedoresTransacciones();  // Crear instancia del formulario hijo
             formularioHijo.MdiParent = this;  // Establecer el contenedor MDI como padre
             formularioHijo.Show();  // Mostrar el formulario hijo
 
@@ -53,6 +53,11 @@ namespace Presentacion_UI
             Form formularioHijo = new NuevaVenta();  // Crear instancia del formulario hijo
             formularioHijo.MdiParent = this;  // Establecer el contenedor MDI como padre
             formularioHijo.Show();
+        }
+
+        private void aBMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

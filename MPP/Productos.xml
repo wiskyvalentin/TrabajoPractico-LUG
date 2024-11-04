@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE Productos [
+	<!ELEMENT Productos (Producto+)>
+	<!ELEMENT Producto (Codigo, Descripcion, PrecioInd, ProveedorId)>
+	<!ATTLIST Producto Id ID #REQUIRED>
+	<!ELEMENT Codigo (#PCDATA)>
+	<!ELEMENT Descripcion (#PCDATA)>
+	<!ELEMENT PrecioInd (#PCDATA)>
+	<!ELEMENT ProveedorId (#PCDATA)>
+]>
+<Productos>
+  <Producto Id="1">
+    <Codigo>COPIA1</Codigo>
+    <Descripcion>COPIA DE LLAVE</Descripcion>
+    <PrecioInd>100.0</PrecioInd>
+    <ProveedorId>4</ProveedorId>
+  </Producto>
+  <Producto Id="2">
+    <Codigo>SERVICIO</Codigo>
+    <Descripcion>SERVICIO DESTRABE A DOMICILIO</Descripcion>
+    <PrecioInd>150</PrecioInd>
+    <ProveedorId>2</ProveedorId>
+  </Producto>
+</Productos>

@@ -9,7 +9,7 @@ namespace Presentacion_UI.Ventas
     {
         public BEFactura oBEFactura;
         private BLLFactura oBllFactura;
-        private BECliente oBECliente;
+        
         public NuevaVenta()
         {
             oBEFactura = new BEFactura();

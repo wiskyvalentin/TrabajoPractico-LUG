@@ -1,6 +1,7 @@
 ﻿using BE;
 using Negocio;
 using Presentacion_UI.ABM;
+using Presentacion_UI.userControls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,7 +18,7 @@ namespace Presentacion_UI
     {
         public InicioSesion()
         {
-           
+            
             InitializeComponent();
         }
 
@@ -29,7 +30,7 @@ namespace Presentacion_UI
         private void button1_Click(object sender, EventArgs e)
         {
             BLLUsuarios oBLLUsuarios = new BLLUsuarios();
-            if (oBLLUsuarios.IniciarSesion(TxtUsuario.Text, TxtContraseña.Text))
+            if (oBLLUsuarios.IniciarSesion(CU_TxtUsuario.Text, cU_TxtContraseña1.Text))
             {
                 Form formularioHijo = new Principal(); 
                
@@ -41,6 +42,19 @@ namespace Presentacion_UI
                 MessageBox.Show("DATOS INCORRECTOS", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                
             }
+        }
+
+        private void cU_TxtContraseña1_Leave(object sender, EventArgs e)
+        {
+            if (!cU_TxtContraseña1.Validar())
+            {
+                MessageBox.Show("FORMATO INCORRECTO", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            } 
+        }
+
+        private void cU_TxtContraseña1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -1,18 +1,14 @@
 ﻿using Abstraccion;
 using BE;
 using MPP;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Negocio
 {
     public class BLLProductos : IGestor<BEProductos>
 
     {
-        MPPProductos oMPPPRODUCTOS;
+        private MPPProductos oMPPPRODUCTOS;
         public BLLProductos()
         {
             oMPPPRODUCTOS = new MPPProductos();
@@ -34,9 +30,9 @@ namespace Negocio
             return oMPPPRODUCTOS.AsignarValores(IdObjeto);
 
         }
-        public BEProductos AsignarValores(int IdObjeto,double Cantidad)
+        public BEProductos AsignarValores(int IdObjeto, double Cantidad)
         {
-            return oMPPPRODUCTOS.AsignarValores(IdObjeto,Cantidad);
+            return oMPPPRODUCTOS.AsignarValores(IdObjeto, Cantidad);
 
         }
 

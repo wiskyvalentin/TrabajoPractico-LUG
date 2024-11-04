@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.button1 = new System.Windows.Forms.Button();
-            this.TxtUsuario = new System.Windows.Forms.TextBox();
-            this.TxtContraseña = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.cU_TxtContraseña1 = new Presentacion_UI.userControls.CU_TxtContraseña();
+            this.CU_TxtUsuario = new Presentacion_UI.userControls.CU_TxtTextocs();
             this.SuspendLayout();
             // 
             // button1
@@ -44,21 +44,6 @@
             this.button1.Text = "Aceptar";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // TxtUsuario
-            // 
-            this.TxtUsuario.Location = new System.Drawing.Point(48, 79);
-            this.TxtUsuario.Name = "TxtUsuario";
-            this.TxtUsuario.Size = new System.Drawing.Size(202, 20);
-            this.TxtUsuario.TabIndex = 1;
-            // 
-            // TxtContraseña
-            // 
-            this.TxtContraseña.Location = new System.Drawing.Point(48, 156);
-            this.TxtContraseña.Name = "TxtContraseña";
-            this.TxtContraseña.PasswordChar = '*';
-            this.TxtContraseña.Size = new System.Drawing.Size(202, 20);
-            this.TxtContraseña.TabIndex = 2;
             // 
             // label1
             // 
@@ -80,15 +65,32 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "Contraseña";
             // 
+            // cU_TxtContraseña1
+            // 
+            this.cU_TxtContraseña1.Location = new System.Drawing.Point(48, 154);
+            this.cU_TxtContraseña1.Name = "cU_TxtContraseña1";
+            this.cU_TxtContraseña1.Size = new System.Drawing.Size(202, 20);
+            this.cU_TxtContraseña1.TabIndex = 7;
+            this.cU_TxtContraseña1.UseSystemPasswordChar = true;
+            this.cU_TxtContraseña1.TextChanged += new System.EventHandler(this.cU_TxtContraseña1_TextChanged);
+            this.cU_TxtContraseña1.Leave += new System.EventHandler(this.cU_TxtContraseña1_Leave);
+            // 
+            // CU_TxtUsuario
+            // 
+            this.CU_TxtUsuario.Location = new System.Drawing.Point(48, 79);
+            this.CU_TxtUsuario.Name = "CU_TxtUsuario";
+            this.CU_TxtUsuario.Size = new System.Drawing.Size(202, 20);
+            this.CU_TxtUsuario.TabIndex = 5;
+            // 
             // InicioSesion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(299, 254);
+            this.Controls.Add(this.cU_TxtContraseña1);
+            this.Controls.Add(this.CU_TxtUsuario);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.TxtContraseña);
-            this.Controls.Add(this.TxtUsuario);
             this.Controls.Add(this.button1);
             this.Name = "InicioSesion";
             this.Text = "InicioSesion";
@@ -101,9 +103,9 @@
         #endregion
 
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox TxtUsuario;
-        private System.Windows.Forms.TextBox TxtContraseña;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private userControls.CU_TxtTextocs CU_TxtUsuario;
+        private userControls.CU_TxtContraseña cU_TxtContraseña1;
     }
 }

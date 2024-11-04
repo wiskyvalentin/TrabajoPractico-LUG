@@ -83,18 +83,18 @@ namespace Presentacion_UI.ABM
 
         private void button3_Click(object sender, EventArgs e)
         {
-            DialogResult Respuesta;
-            Respuesta = MessageBox.Show("¿Desea agregar el proveedor?", "ALERTA", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (Respuesta == DialogResult.Yes)
-            {
-                oBEProveedores.Nombre = TxtNombre.Text.Trim();
-                oBEProveedores.Apellido = TxtApellido.Text.Trim();
-                oBEProveedores.Correo = TxtCorreo.Text.Trim();
-                oBEProveedores.Direccion = TxtDireccion.Text.Trim();
-                oBEProveedores.CBU = TxtCBU.Text.Trim();
-                oBLLProveedores.Guardar(oBEProveedores);
-                cargarGrilla();
-            }
+            //DialogResult Respuesta;
+            //Respuesta = MessageBox.Show("¿Desea agregar el proveedor?", "ALERTA", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            //if (Respuesta == DialogResult.Yes)
+            //{
+            //    oBEProveedores.Nombre = TxtNombre.Text.Trim();
+            //    oBEProveedores.Apellido = TxtApellido.Text.Trim();
+            //    oBEProveedores.Correo = TxtCorreo.Text.Trim();
+            //    oBEProveedores.Direccion = TxtDireccion.Text.Trim();
+            //    oBEProveedores.CBU = TxtCBU.Text.Trim();
+            //    oBLLProveedores.Guardar(oBEProveedores);
+            //    cargarGrilla();
+            //}
         }
         private void btnEliminar_Click(object sender, EventArgs e)
         {

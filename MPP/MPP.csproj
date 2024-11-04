@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -43,6 +44,7 @@
   <ItemGroup>
     <Compile Include="MPPCliente.cs" />
     <Compile Include="MPPFactura.cs" />
+    <Compile Include="MPPPersonas.cs" />
     <Compile Include="MPPProductos.cs" />
     <Compile Include="MPPProveedores.cs" />
     <Compile Include="MPPUsuarios.cs" />
@@ -61,6 +63,9 @@
       <Project>{5ff189d8-6de5-4649-a60c-b46c98a1c092}</Project>
       <Name>DAL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Productos.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

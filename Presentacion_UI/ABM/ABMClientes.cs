@@ -1,5 +1,6 @@
 ﻿using BE;
 using Negocio;
+using Presentacion_UI.userControls;
 using System;
 using System.Windows.Forms;
 
@@ -38,7 +39,7 @@ namespace Presentacion_UI.ABM
             {
                 oBECliente.Nombre = TxtNombre.Text.Trim();
                 oBECliente.Apellido = TxtApellido.Text.Trim();
-                oBECliente.Correo = TxtCorreo.Text.Trim();
+                oBECliente.Correo = cU_TxtCorreo1.Text.Trim();
                 oBECliente.CondicionVenta = TxtCondVenta.Text.Trim();
                 oBECliente.Cuit = TxtCuit.Text.Trim();
                 oBLLCliente.Guardar(oBECliente);
@@ -57,7 +58,7 @@ namespace Presentacion_UI.ABM
                     oBECliente.Id = Convert.ToInt32(LabelID.Text);
                     oBECliente.Nombre = TxtNombre.Text.Trim();
                     oBECliente.Apellido = TxtApellido.Text.Trim();
-                    oBECliente.Correo = TxtCorreo.Text.Trim();
+                    oBECliente.Correo = cU_TxtCorreo1.Text.Trim();
                     oBECliente.CondicionVenta = TxtCondVenta.Text.Trim();
                     oBECliente.Cuit = TxtCuit.Text;
                     oBLLCliente.Guardar(oBECliente);
@@ -87,7 +88,7 @@ namespace Presentacion_UI.ABM
             LabelID.Text = "0";
             TxtCuit.Text = string.Empty;
             TxtNombre.Text = string.Empty;
-            TxtCorreo.Text = string.Empty;
+            cU_TxtCorreo1.Text = string.Empty;
             TxtApellido.Text = string.Empty;
             TxtCondVenta.Text = string.Empty;
         }
@@ -99,9 +100,23 @@ namespace Presentacion_UI.ABM
                 LabelID.Text = dataGridView1.CurrentRow.Cells["Id"].Value.ToString();
                 TxtCuit.Text = dataGridView1.CurrentRow.Cells["Cuit"].Value.ToString();
                 TxtNombre.Text = dataGridView1.CurrentRow.Cells["Nombre"].Value.ToString();
-                TxtCorreo.Text = dataGridView1.CurrentRow.Cells["Correo"].Value.ToString();
+                cU_TxtCorreo1.Text = dataGridView1.CurrentRow.Cells["Correo"].Value.ToString();
                 TxtApellido.Text = dataGridView1.CurrentRow.Cells["Apellido"].Value.ToString();
                 TxtCondVenta.Text = dataGridView1.CurrentRow.Cells["CondicionVenta"].Value.ToString();
+            }
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            Form formularioHijo = new REPORTES.ReporteClientes();  
+            formularioHijo.Show(); 
+        }
+
+        private void cU_TxtCorreo1_Leave(object sender, EventArgs e)
+        {
+            if (!cU_TxtCorreo1.Validar())
+            {
+                MessageBox.Show("FORMATO INCORRECTO", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

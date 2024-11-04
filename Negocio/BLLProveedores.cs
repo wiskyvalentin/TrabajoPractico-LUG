@@ -1,24 +1,21 @@
 ﻿using Abstraccion;
 using BE;
 using MPP;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
 
 namespace Negocio
 {
-    public class BLLProveedores : IGestor<BEProveedores>
+    public class BLLProveedores : BLLPersonas,IGestor<BEProveedores>
     {
-        MPPProveedores oMPPProvedores;
+        private MPPProveedores oMPPProvedores;
         public BLLProveedores()
         {
             oMPPProvedores = new MPPProveedores();
         }
         #region METODOS GENERICOS
 
-        public bool Baja(BEProveedores Objeto)
+        public  bool Baja(BEProveedores Objeto)
         {
             return oMPPProvedores.Baja(Objeto);
         }
@@ -40,6 +37,7 @@ namespace Negocio
             return oMPPProvedores.ListarTodo();
 
         }
+            
         #endregion
         #region METODOS NO GENERICOS
         #endregion

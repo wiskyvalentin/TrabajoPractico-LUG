@@ -145,7 +145,10 @@ namespace Presentacion_UI.ABM
         {
 
         }
+        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
 
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
